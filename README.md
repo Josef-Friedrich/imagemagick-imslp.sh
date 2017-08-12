@@ -2,5 +2,6 @@
 
 # imagemagick-imslp.sh
 
-`imagemagick-imslp.sh` a wrapper script around imagemagick to process image files
-suitable for [imslp.org](http://imslp.org) (International Music Score Library Project).
+`imagemagick-imslp.sh` a wrapper script around [imagemagick](http://www.imagemagick.org) to 
+process image files suitable for [imslp.org](http://imslp.org) 
+(International Music Score Library Project).
