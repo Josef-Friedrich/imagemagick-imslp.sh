@@ -1,15 +1,18 @@
 #!/bin/sh
 
-. ../helper.lib
+. ./test-helper.sh
 
-P=../../
+P=../
+
+PARENT_MOCK_PATH="$(pwd)"
 
 test_without_arguments() {
+	echo $(pwd)
 	assert_fail "${P}imagemagick-imslp.sh" > /dev/null 2>&1
 }
 
 test_without_options() {
-	_set_mocking_path imagemagick-imslp
+	mock_path bin
 	assert_equals "$(${P}imagemagick-imslp.sh pic.jpg | sed -n 1p)" \
 		'Convert pic.jpg to pic.png'
 	assert_equals "$(${P}imagemagick-imslp.sh pic.jpg | sed -n 2p)" \
@@ -18,20 +21,20 @@ test_without_options() {
 
 # backup
 test_option_b() {
-	_set_mocking_path imagemagick-imslp
+	mock_path bin
 	assert_equals "$(${P}imagemagick-imslp.sh -b pic.jpg | grep 'Option --backup')" \
 		'Option --backup: pic.jpg pic.jpg.bak'
 }
 
 test_option_backup() {
-	_set_mocking_path imagemagick-imslp
+	mock_path bin
 	assert_equals "$(${P}imagemagick-imslp.sh --backup pic.jpg | grep 'Option --backup')" \
 		'Option --backup: pic.jpg pic.jpg.bak'
 }
 
 # compression
 test_option_c() {
-	_set_mocking_path imagemagick-imslp
+	mock_path bin
 	assert_equals "$(${P}imagemagick-imslp.sh -c pic.jpg | sed -n 2p)" \
 		'pic.jpg -deskew 40% -threshold 50% -trim +repage -compress Group4 -monochrome pic.pdf'
 }
@@ -47,20 +50,20 @@ test_option_help() {
 
 # join
 test_option_j() {
-	_set_mocking_path imagemagick-imslp
+	mock_path bin
 	assert_equals "$(${P}imagemagick-imslp.sh -j pic.jpg | grep 'Option --join:')" \
 		'Option --join: *.pdf cat output out.pdf'
 }
 
 test_option_join() {
-	_set_mocking_path imagemagick-imslp
+	mock_path bin
 	assert_equals "$(${P}imagemagick-imslp.sh --join pic.jpg | grep 'Option --join:')" \
 		'Option --join: *.pdf cat output out.pdf'
 }
 
 # resize
 test_option_r() {
-	_set_mocking_path imagemagick-imslp
+	mock_path bin
 	assert_equals "$(${P}imagemagick-imslp.sh -r pic.jpg | sed -n 2p)" \
 		'pic.jpg -resize 200% -deskew 40% -threshold 50% -trim +repage pic.png'
 }
