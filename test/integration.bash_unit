@@ -4,10 +4,9 @@
 
 P=../
 
-PARENT_MOCK_PATH="$(pwd)"
-
 test_without_arguments() {
-	echo $(pwd)
+	export PARENT_MOCK_PATH="$(pwd)"
+	mock_path bin
 	assert_fail "${P}imagemagick-imslp.sh" > /dev/null 2>&1
 }
 
