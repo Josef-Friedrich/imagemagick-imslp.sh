@@ -4,9 +4,56 @@ IMAGE=$1
 WIDTH=$(identify -format %w "$IMAGE")
 HEIGHT=$(identify -format %h "$IMAGE")
 
-echo $WIDTH $HEIGHT
+LEVEL='-level 0%,30%'
 
+########################################################################
+# BORDER
+########################################################################
 
-convert "$IMAGE" -region '10%x90%' -negate out.png
+BORDER=250
 
-# convert "$IMAGE" -region '100%x10' -region '10x100%' -negate out.png
+BORDER_TOP="$BORDER"
+BORDER_RIGHT="$BORDER"
+BORDER_BOTTOM="$BORDER"
+BORDER_LEFT="$BORDER"
+
+# BORDER_TOP=50
+# BORDER_RIGHT=200
+# BORDER_BOTTOM=300
+# BORDER_LEFT=800
+
+########################################################################
+# REGION
+########################################################################
+
+REGION_TOP="\
+$((WIDTH - BORDER_RIGHT))x\
+${BORDER_TOP}"
+
+REGION_RIGHT="\
+${BORDER_RIGHT}x\
+$((HEIGHT - BORDER_BOTTOM))\
++$((WIDTH - BORDER_RIGHT))"
+
+REGION_BOTTOM="\
+$((WIDTH - BORDER_LEFT))x\
+${BORDER_BOTTOM}\
++${BORDER_LEFT}\
++$((HEIGHT - BORDER_BOTTOM))"
+
+REGION_LEFT="\
+${BORDER_LEFT}x\
+$((HEIGHT - BORDER_TOP))\
++0\
++${BORDER_TOP}"
+
+########################################################################
+# command
+########################################################################
+
+convert "$IMAGE" \
+	-region $REGION_TOP $LEVEL \
+	-region $REGION_RIGHT $LEVEL \
+	-region $REGION_BOTTOM $LEVEL \
+	-region $REGION_LEFT $LEVEL \
+	out.png
