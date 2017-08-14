@@ -56,9 +56,13 @@ $((HEIGHT - BORDER_TOP))\
 
 [ -z "$OUTPUT" ] && OUTPUT=out.png
 
-convert "$INPUT" \
+ARGUMENTS="$INPUT \
 	-region $REGION_TOP $LEVEL \
 	-region $REGION_RIGHT $LEVEL \
 	-region $REGION_BOTTOM $LEVEL \
 	-region $REGION_LEFT $LEVEL \
-	"$OUTPUT"
+	$OUTPUT"
+
+echo $ARGUMENTS
+
+convert $ARGUMENTS
