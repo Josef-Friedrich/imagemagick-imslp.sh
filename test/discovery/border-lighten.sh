@@ -1,8 +1,9 @@
 #! /bin/sh
 
-IMAGE=$1
-WIDTH=$(identify -format %w "$IMAGE")
-HEIGHT=$(identify -format %h "$IMAGE")
+INPUT="$1"
+OUTPUT="$2"
+WIDTH=$(identify -format %w "$INPUT")
+HEIGHT=$(identify -format %h "$INPUT")
 
 LEVEL='-level 0%,30%'
 
@@ -10,7 +11,9 @@ LEVEL='-level 0%,30%'
 # BORDER
 ########################################################################
 
-BORDER=250
+BORDER=$(printf "%i\n" $(echo "$WIDTH * 0.02" | bc))
+
+#BORDER=250
 
 BORDER_TOP="$BORDER"
 BORDER_RIGHT="$BORDER"
@@ -51,9 +54,11 @@ $((HEIGHT - BORDER_TOP))\
 # command
 ########################################################################
 
-convert "$IMAGE" \
+[ -z "$OUTPUT" ] && OUTPUT=out.png
+
+convert "$INPUT" \
 	-region $REGION_TOP $LEVEL \
 	-region $REGION_RIGHT $LEVEL \
 	-region $REGION_BOTTOM $LEVEL \
 	-region $REGION_LEFT $LEVEL \
-	out.png
+	"$OUTPUT"
