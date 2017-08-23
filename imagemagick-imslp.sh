@@ -28,7 +28,7 @@ OUT_EXT=png
 _usage() {
 	echo "Usage: imagemagick-imslp.sh [-bcfhjrt] <filename-or-glob-pattern>
 
-`imagemagick-imslp.sh` a wrapper script around imagemagick to process image files
+imagemagick-imslp.sh a wrapper script around imagemagick to process image files
 suitable for imslp.org (International Music Score Library Project)
 
 http://imslp.org/wiki/IMSLP:Musiknoten_beisteuern

@@ -1,8 +1,10 @@
 #!/bin/sh
 
-. ./test-helper.sh
-
-P=../
+setup() {
+	. ./lib/test-helper.sh
+	mock_path bin
+	P=./../
+}
 
 test_help() {
 	source_exec ${P}imagemagick-imslp.sh
