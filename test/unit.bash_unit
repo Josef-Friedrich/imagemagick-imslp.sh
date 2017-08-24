@@ -6,11 +6,6 @@ setup() {
 	P=./../
 }
 
-test_help() {
-	source_exec ${P}imagemagick-imslp.sh
-	assert_equals "$(_usage | head -n 1)" "Usage: imagemagick-imslp.sh [-bcfhjrt] <filename-or-glob-pattern>"
-}
-
 test_remove_extension() {
 	source_exec ${P}imagemagick-imslp.sh
 	assert_equals "$(_remove_extension filename.png)" "filename"
