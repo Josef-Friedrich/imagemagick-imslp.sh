@@ -10,27 +10,38 @@
 ## Usage
 
 ```
-Usage: imagemagick-imslp.sh [-bcfhjrt] <filename-or-glob-pattern>
+Usage: imagemagick-imslp.sh [-bcfhjrstv] <filename-or-glob-pattern>
 
 A wrapper script for imagemagick to process image files suitable for imslp.org (International Music Score Library Project)
 
 http://imslp.org/wiki/IMSLP:Musiknoten_beisteuern
 
 OPTIONS:
-	-c, --compression:  Use CCITT Group 4 compression. This options
-	                    generates a PDF file
-	-b, --backup:       backup original images (add .bak to filename)
-	-f, --force:        force
-	-h, --help:         Show this help message
-	-j, --join:         Join single paged PDF files to one PDF file
-	-r, --resize:       Resize 200%
-	-t, --threshold:    threshold, default 50%
+	-b, --backup
+	  Backup original images (add .bak to filename).
+	-c, --compression
+	  Use CCITT Group 4 compression. This options generates a PDF
+	  file.
+	-f, --force
+	  force
+	-h, --help
+	  Show this help message
+	-j, --join
+	  Join single paged PDF files to one PDF file
+	-r, --resize
+	  Resize 200%
+	-s, --short-description
+	  Show a short description / summary.
+	-t, --threshold
+	  threshold, default 50%.
+	-v, --version
+	  Show the version number of this script.
 
 ```
 
 ## Project pages
 
-* https://github.com/JosefFriedrich-shell/skeleton.sh
+* https://github.com/JosefFriedrich-shell/imagemagick-imslp.sh
 
 ## Testing
 
