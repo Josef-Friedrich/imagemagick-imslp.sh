@@ -35,9 +35,9 @@ $SHORT_DESCRIPTION
 http://imslp.org/wiki/IMSLP:Musiknoten_beisteuern
 
 OPTIONS:
+	-b, --backup:       backup original images (add .bak to filename)
 	-c, --compression:  Use CCITT Group 4 compression. This options
 	                    generates a PDF file
-	-b, --backup:       backup original images (add .bak to filename)
 	-f, --force:        force
 	-h, --help:         Show this help message
 	-j, --join:         Join single paged PDF files to one PDF file

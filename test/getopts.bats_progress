@@ -1,0 +1,170 @@
+#!/usr/bin/env bats
+
+setup() {
+	. ./test/lib/test-helper.sh
+	source_exec imagemagick-imslp.sh
+}
+
+# -b, --backup
+@test "_getopts -" {
+	_getopts -
+	[ "$OPT_" -eq 1 ]
+}
+
+@test "_getopts --" {
+	_getopts --
+	[ "$OPT_" -eq 1 ]
+}
+
+@test "_getopts --=123" {
+	run _getopts --=123
+	[ "$status" -eq 4 ]
+}
+# -c, --compression
+
+@test "_getopts -" {
+	_getopts -
+	[ "$OPT_" -eq 1 ]
+}
+
+@test "_getopts --" {
+	_getopts --
+	[ "$OPT_" -eq 1 ]
+}
+
+@test "_getopts --=123" {
+	run _getopts --=123
+	[ "$status" -eq 4 ]
+}
+
+# -f, --force
+
+@test "_getopts -" {
+	_getopts -
+	[ "$OPT_" -eq 1 ]
+}
+
+@test "_getopts --" {
+	_getopts --
+	[ "$OPT_" -eq 1 ]
+}
+
+@test "_getopts --=123" {
+	run _getopts --=123
+	[ "$status" -eq 4 ]
+}
+
+# -h, --help
+
+@test "_getopts -h" {
+	run _getopts -h
+	[ "$status" -eq 0 ]
+	[ "${lines[0]}" = "check_unattended_upgrades v$VERSION" ]
+}
+
+@test "_getopts --help" {
+	run _getopts --help
+	[ "$status" -eq 0 ]
+	[ "${lines[0]}" = "check_unattended_upgrades v$VERSION" ]
+}
+
+@test "_getopts --help=123" {
+	run _getopts --help=123
+	[ "$status" -eq 4 ]
+}
+
+# -j, --join
+
+@test "_getopts -" {
+	_getopts -
+	[ "$OPT_" -eq 1 ]
+}
+
+@test "_getopts --" {
+	_getopts --
+	[ "$OPT_" -eq 1 ]
+}
+
+@test "_getopts --=123" {
+	run _getopts --=123
+	[ "$status" -eq 4 ]
+}
+
+# -r, --resize
+
+@test "_getopts -" {
+	_getopts -
+	[ "$OPT_" -eq 1 ]
+}
+
+@test "_getopts --" {
+	_getopts --
+	[ "$OPT_" -eq 1 ]
+}
+
+@test "_getopts --=123" {
+	run _getopts --=123
+	[ "$status" -eq 4 ]
+}
+
+# -s, --short-description
+
+@test "_getopts -D" {
+	run _getopts -D
+	[ "$status" -eq 0 ]
+	[ "${lines[0]}" = "Monitoring plugin to check automatic updates \
+(unattended-upgrades) on Debian / Ubuntu." ]
+}
+
+@test "_getopts --short-description" {
+	run _getopts --short-description
+	[ "$status" -eq 0 ]
+	[ "${lines[0]}" = "Monitoring plugin to check automatic updates \
+(unattended-upgrades) on Debian / Ubuntu." ]
+}
+
+@test "_getopts --short-description=123" {
+	run _getopts --short-description=123
+	[ "$status" -eq 4 ]
+}
+
+# -t, --threshold
+
+@test "_getopts -t 123" {
+	_getopts -t 123
+	[ "$OPT_THRESHOLD" -eq 123 ]
+}
+
+@test "_getopts -t" {
+	run _getopts -t
+	[ "$status" -eq 3 ]
+}
+
+@test "_getopts --threshold=123" {
+	_getopts --threshold=123
+	[ "$OPT_ENABLE" -eq 123 ]
+}
+
+@test "_getopts --threshold" {
+	run _getopts --threshold
+	[ "$status" -eq 3 ]
+}
+
+# -v, --version
+
+@test "_getopts -v" {
+	run _getopts -v
+	[ "$status" -eq 0 ]
+	[ "${lines[0]}" = "$VERSION" ]
+}
+
+@test "_getopts --version" {
+	run _getopts --version
+	[ "$status" -eq 0 ]
+	[ "${lines[0]}" = "$VERSION" ]
+}
+
+@test "_getopts --version=123" {
+	run _getopts --version=123
+	[ "$status" -eq 4 ]
+}
