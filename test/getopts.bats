@@ -59,13 +59,13 @@ setup() {
 @test "_getopts -h" {
 	run _getopts -h
 	[ "$status" -eq 0 ]
-	[ "${lines[0]}" = "Usage: imagemagick-imslp.sh [-bcfhjrstv] <filename-or-glob-pattern>" ]
+	[ "${lines[0]}" = "Usage: imagemagick-imslp.sh [-bcfhjrSstv] <filename-or-glob-pattern>" ]
 }
 
 @test "_getopts --help" {
 	run _getopts --help
 	[ "$status" -eq 0 ]
-	[ "${lines[0]}" = "Usage: imagemagick-imslp.sh [-bcfhjrstv] <filename-or-glob-pattern>" ]
+	[ "${lines[0]}" = "Usage: imagemagick-imslp.sh [-bcfhjrSstv] <filename-or-glob-pattern>" ]
 }
 
 @test "_getopts --help=123" {
@@ -104,6 +104,23 @@ setup() {
 
 @test "_getopts --resize=123" {
 	run _getopts --resize=123
+	[ "$status" -eq 4 ]
+}
+
+# -S, --threshold-series
+
+@test "_getopts -S" {
+	_getopts -S
+	[ "$OPT_SERIES" -eq 1 ]
+}
+
+@test "_getopts --threshold-series" {
+	_getopts --threshold-series
+	[ "$OPT_SERIES" -eq 1 ]
+}
+
+@test "_getopts --threshold-series=123" {
+	run _getopts --threshold-series=123
 	[ "$status" -eq 4 ]
 }
 

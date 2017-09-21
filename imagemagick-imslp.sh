@@ -30,7 +30,7 @@ VERSION=1.0
 PROJECT_PAGES="https://github.com/JosefFriedrich-shell/imagemagick-imslp.sh"
 SHORT_DESCRIPTION="A wrapper script for imagemagick to process image \
 files suitable for imslp.org (International Music Score Library Project)"
-USAGE="Usage: imagemagick-imslp.sh [-bcfhjrstv] <filename-or-glob-pattern>
+USAGE="Usage: imagemagick-imslp.sh [-bcfhjrSstv] <filename-or-glob-pattern>
 
 $SHORT_DESCRIPTION
 
@@ -50,6 +50,10 @@ OPTIONS:
 	  Join single paged PDF files to one PDF file
 	-r, --resize
 	  Resize 200%
+	-S, --threshold-series
+	  Convert the samge image with differnt threshold values to find
+	  the best threshold value. Those values are probed:
+	  $THRESHOLD_SERIES.
 	-s, --short-description
 	  Show a short description / summary.
 	-t, --threshold
@@ -60,6 +64,12 @@ OPTIONS:
 
 OUT_EXT=png
 JOB_IDENTIFIER="imagemagick-imslp_$(date +%s)"
+THRESHOLD_SERIES="50
+55
+60
+65
+70
+75"
 
 _getopts() {
 	OPT_BACKUP=
@@ -69,7 +79,7 @@ _getopts() {
 	OPT_RESIZE=
 	OPT_THRESHOLD=50%
 
-	while getopts :cbfhjrst:v-: arg; do
+	while getopts :cbfhjrSst:v-: arg; do
 		case $arg in
 			b) OPT_BACKUP=1 ;;
 			c) OPT_COMPRESSION=1 ;;
@@ -77,6 +87,7 @@ _getopts() {
 			h) echo "$USAGE" ; exit 0 ;;
 			j) OPT_JOIN=1 ;;
 			r) OPT_RESIZE=1 ;;
+			S) OPT_SERIES=1 ;;
 			s) echo "$SHORT_DESCRIPTION" ; exit 0 ;;
 			t) OPT_THRESHOLD="$OPTARG" ;;
 			v) echo "$VERSION" ; exit 0 ;;
@@ -93,19 +104,21 @@ _getopts() {
 					help) echo "$USAGE" ; exit 0 ;;
 					join) OPT_JOIN=1 ;;
 					resize) OPT_RESIZE=1 ;;
+					threshold-series) OPT_SERIES=1 ;;
 					threshold=?*) OPT_THRESHOLD="$LONG_OPTARG" ;;
 					short-description) echo "$SHORT_DESCRIPTION" ; exit 0 ;;
 					version) echo "$VERSION" ; exit 0 ;;
+
+					backup*|compression*|force*|help*|join*|resize*|short-description*|threshold-series*|version*)
+						echo "No argument allowed for the option “--$OPTARG”!" >&2
+						exit 4
+						;;
 
 					threshold*)
 						echo "Option “--$OPTARG” requires an argument!" >&2
 						exit 3
 						;;
 
-					backup*|compression*|force*|help*|join*|resize*|short-description*|version*)
-						echo "No argument allowed for the option “--$OPTARG”!" >&2
-						exit 4
-						;;
 					'') break ;;
 					*) echo "Illegal option --$OPTARG" >&2; exit 2 ;;
 				esac ;;
@@ -126,6 +139,13 @@ _get_extension() {
 
 _pdf_to_images() {
 	pdfimages -tiff "$1" "$JOB_IDENTIFIER"
+}
+
+_threshold_series() {
+	for THRESHOLD in $THRESHOLD_SERIES ; do
+		OPT_THRESHOLD="$THRESHOLD%"
+		_convert "$1"
+	done
 }
 
 _process_pdf() {
@@ -173,7 +193,12 @@ _convert() {
 		OUT_EXT=pdf
 	fi
 	CHANNELS=$(_get_channels "$1")
-	NEW=$(_remove_extension "$1").$OUT_EXT
+	if [ -z "$OPT_SERIES" ]; then
+		NEW=$(_remove_extension "$1").$OUT_EXT
+	else
+		NEW=$(_remove_extension "$1")_$OPT_THRESHOLD.$OUT_EXT
+	fi
+
 	if [ "$CHANNELS" != 2c ] || [ "$OPT_FORCE" = 1 ]; then
 		echo "Convert $1 to $NEW"
 		if [ "$OPT_BACKUP" = 1 ]; then
@@ -200,8 +225,12 @@ fi
 
 _process_pdf $IMAGES
 
-for IMAGE in $IMAGES; do
-	_convert "$IMAGE"
-done
+if [ -n "$OPT_SERIES" ]; then
+	_threshold_series $IMAGES
+else
+	for IMAGE in $IMAGES; do
+		_convert "$IMAGE"
+	done
+fi
 
 [ "$OPT_JOIN" ] && _join

@@ -25,3 +25,10 @@ setup() {
 	[ "${lines[0]}" = pdf ]
 	[ "${lines[1]}" = '' ]
 }
+
+@test "_threshold_series image.png" {
+	mock_path test/bin
+	OPT_SERIES=1
+	run _threshold_series image.png
+	echo $lines > $HOME/debug
+}
