@@ -7,5 +7,5 @@ setup() {
 
 @test "./imagemagick-imslp.sh file.pdf" {
 	run ./imagemagick-imslp.sh file.pdf
-	[ "${lines[0]}" = 'Command “pdfimages”: --tiff file.pdf imagemagick-imslp_1505986186' ]
+	[ "${lines[0]}" = 'Command “pdfimages”: -tiff file.pdf imagemagick-imslp_1505986186' ]
 }

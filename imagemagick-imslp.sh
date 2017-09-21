@@ -125,7 +125,7 @@ _get_extension() {
 }
 
 _pdf_to_images() {
-	pdfimages --tiff "$1" "$JOB_IDENTIFIER"
+	pdfimages -tiff "$1" "$JOB_IDENTIFIER"
 }
 
 _process_pdf() {
