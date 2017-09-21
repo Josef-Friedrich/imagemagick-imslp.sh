@@ -45,6 +45,44 @@ OPTIONS:
 	-t, --threshold:    threshold, default 50%
 "
 
+_getopts() {
+	OPT_BACKUP=
+	OPT_COMPRESSION=
+	OPT_FORCE=
+	OPT_JOIN=
+	OPT_RESIZE=
+	OPT_THRESHOLD=50%
+
+	while getopts :cbfhjrt:-: arg; do
+		case $arg in
+			b) OPT_BACKUP=1 ;;
+			c) OPT_COMPRESSION=1 ;;
+			f) OPT_FORCE=1 ;;
+			h) echo $USAGE ; exit 0 ;;
+			j) OPT_JOIN=1 ;;
+			r) OPT_RESIZE=1 ;;
+			t) OPT_THRESHOLD="$OPTARG" ;;
+			-)
+				LONG_OPTARG="${OPTARG#*=}"
+				case $OPTARG in
+					backup) OPT_BACKUP=1 ;;
+					compression) OPT_COMPRESSION=1 ;;
+					force) OPT_FORCE=1 ;;
+					help) echo $USAGE ; exit 0 ;;
+					join) OPT_JOIN=1 ;;
+					resize) OPT_RESIZE=1 ;;
+					threshold=?*) OPT_THRESHOLD="$LONG_OPTARG" ;;
+					threshold*) echo "No arg for --$OPTARG option" >&2; exit 2 ;;
+					'') break ;;
+					*) echo "Illegal option --$OPTARG" >&2; exit 2 ;;
+				esac ;;
+			\?) exit 2 ;;
+		esac
+	done
+	shift $((OPTIND - 1))
+	IMAGES=$@
+}
+
 _remove_extension() {
 	echo "$1" | sed 's/\.[[:alnum:]]*$//'
 }
@@ -99,51 +137,13 @@ _convert() {
 	fi
 }
 
-_arguments() {
-	OPT_BACKUP=
-	OPT_COMPRESSION=
-	OPT_FORCE=
-	OPT_JOIN=
-	OPT_RESIZE=
-	OPT_THRESHOLD=50%
-
-	while getopts :cbfhjrt:-: arg; do
-		case $arg in
-			b) OPT_BACKUP=1 ;;
-			c) OPT_COMPRESSION=1 ;;
-			f) OPT_FORCE=1 ;;
-			h) echo $USAGE ; exit 0 ;;
-			j) OPT_JOIN=1 ;;
-			r) OPT_RESIZE=1 ;;
-			t) OPT_THRESHOLD="$OPTARG" ;;
-			-)
-				LONG_OPTARG="${OPTARG#*=}"
-				case $OPTARG in
-					backup) OPT_BACKUP=1 ;;
-					compression) OPT_COMPRESSION=1 ;;
-					force) OPT_FORCE=1 ;;
-					help) echo $USAGE ; exit 0 ;;
-					join) OPT_JOIN=1 ;;
-					resize) OPT_RESIZE=1 ;;
-					threshold=?*) OPT_THRESHOLD="$LONG_OPTARG" ;;
-					threshold*) echo "No arg for --$OPTARG option" >&2; exit 2 ;;
-					'') break ;;
-					*) echo "Illegal option --$OPTARG" >&2; exit 2 ;;
-				esac ;;
-			\?) exit 2 ;;
-		esac
-	done
-	shift $((OPTIND - 1))
-	IMAGES=$@
-}
-
 _join() {
 	pdftk *.pdf cat output out.pdf
 }
 
 ## This SEPARATOR is required for test purposes. Please don’t remove! ##
 
-_arguments $@
+_getopts $@
 
 if [ -z "$IMAGES" ]; then
 	_usage

@@ -56,12 +56,12 @@ test_options_r_resize() {
 }
 
 ##
-# function _arguments
+# function _getopts
 ##
 
-test_arguments_without() {
+test_getopts_without() {
 	source_exec ${P}imagemagick-imslp.sh
-	_arguments
+	_getopts
 	assert_equals "$OPT_BACKUP" ''
 	assert_equals "$OPT_COMPRESSION" ''
 	assert_equals "$OPT_FORCE" ''
@@ -70,9 +70,9 @@ test_arguments_without() {
 	assert_equals "$OPT_THRESHOLD" 50%
 }
 
-test_arguments_only_file() {
+test_getopts_only_file() {
 	source_exec ${P}imagemagick-imslp.sh
-	_arguments pic.jpg
+	_getopts pic.jpg
 	assert_equals "$OPT_BACKUP" ''
 	assert_equals "$OPT_COMPRESSION" ''
 	assert_equals "$OPT_FORCE" ''
@@ -82,86 +82,86 @@ test_arguments_only_file() {
 	assert_equals "$IMAGES" pic.jpg
 }
 
-test_arguments_multiple_files() {
+test_getopts_multiple_files() {
 	source_exec ${P}imagemagick-imslp.sh
-	_arguments pic1.jpg pic2.jpg pic3.jpg
+	_getopts pic1.jpg pic2.jpg pic3.jpg
 	assert_equals "$IMAGES" 'pic1.jpg pic2.jpg pic3.jpg'
 }
 
 # backup
-test_arguments_b() {
+test_getopts_b() {
 	source_exec ${P}imagemagick-imslp.sh
-	_arguments -b
+	_getopts -b
 	assert_equals "$OPT_BACKUP" 1
 }
 
-test_arguments_backup() {
+test_getopts_backup() {
 	source_exec ${P}imagemagick-imslp.sh
-	_arguments --backup
+	_getopts --backup
 	assert_equals "$OPT_BACKUP" 1
 }
 
 # compression
-test_arguments_c() {
+test_getopts_c() {
 	source_exec ${P}imagemagick-imslp.sh
-	_arguments -c
+	_getopts -c
 	assert_equals "$OPT_COMPRESSION" 1
 }
 
-test_arguments_compression() {
+test_getopts_compression() {
 	source_exec ${P}imagemagick-imslp.sh
-	_arguments --compression
+	_getopts --compression
 	assert_equals "$OPT_COMPRESSION" 1
 }
 
 # force
-test_arguments_f() {
+test_getopts_f() {
 	source_exec ${P}imagemagick-imslp.sh
-	_arguments -f
+	_getopts -f
 	assert_equals "$OPT_FORCE" 1
 }
 
-test_arguments_force() {
+test_getopts_force() {
 	source_exec ${P}imagemagick-imslp.sh
-	_arguments --force
+	_getopts --force
 	assert_equals "$OPT_FORCE" 1
 }
 
 # join
-test_arguments_j() {
+test_getopts_j() {
 	source_exec ${P}imagemagick-imslp.sh
-	_arguments -j
+	_getopts -j
 	assert_equals "$OPT_JOIN" 1
 }
 
-test_arguments_join() {
+test_getopts_join() {
 	source_exec ${P}imagemagick-imslp.sh
-	_arguments --join
+	_getopts --join
 	assert_equals "$OPT_JOIN" 1
 }
 
 # resize
-test_arguments_r() {
+test_getopts_r() {
 	source_exec ${P}imagemagick-imslp.sh
-	_arguments -r
+	_getopts -r
 	assert_equals "$OPT_RESIZE" 1
 }
 
-test_arguments_resize() {
+test_getopts_resize() {
 	source_exec ${P}imagemagick-imslp.sh
-	_arguments --resize
+	_getopts --resize
 	assert_equals "$OPT_RESIZE" 1
 }
 
 # threshold
-test_arguments_t() {
+test_getopts_t() {
 	source_exec ${P}imagemagick-imslp.sh
-	_arguments -t 10%
+	_getopts -t 10%
 	assert_equals "$OPT_THRESHOLD" 10%
 }
 
-test_arguments_threshold() {
+test_getopts_threshold() {
 	source_exec ${P}imagemagick-imslp.sh
-	_arguments --threshold=11%
+	_getopts --threshold=11%
 	assert_equals "$OPT_THRESHOLD" 11%
 }
