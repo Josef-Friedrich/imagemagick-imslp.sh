@@ -131,6 +131,7 @@ _pdf_to_images() {
 _process_pdf() {
 	if [ "$(_get_extension "$1")" = pdf ]; then
 		_pdf_to_images "$1"
+		IMAGES="$(find . -maxdepth 1 -name "$JOB_IDENTIFIER*")"
 	fi
 }
 
