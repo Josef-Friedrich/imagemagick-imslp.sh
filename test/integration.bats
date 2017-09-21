@@ -5,6 +5,12 @@ setup() {
 	mock_path test/bin
 }
 
+@test "./imagemagick-imslp.sh" {
+	run ./imagemagick-imslp.sh
+	[ "$status" -eq 1 ]
+	[ "${lines[0]}" = 'Usage: imagemagick-imslp.sh [-bcfhjrSstv] <filename-or-glob-pattern>' ]
+}
+
 @test "./imagemagick-imslp.sh file.pdf" {
 	run ./imagemagick-imslp.sh file.pdf
 	[ "${lines[0]}" = 'Command “pdfimages”: -tiff file.pdf imagemagick-imslp_1505986186' ]
