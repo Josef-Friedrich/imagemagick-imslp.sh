@@ -27,6 +27,11 @@ OPTIONS:
 	-t, --threshold:    threshold, default 50%
 
 ```
+
+## Project pages
+
+* https://github.com/JosefFriedrich-shell/skeleton.sh
+
 ## Testing
 
 ```
