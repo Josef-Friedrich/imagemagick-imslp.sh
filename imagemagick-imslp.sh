@@ -64,12 +64,7 @@ OPTIONS:
 
 OUT_EXT=png
 JOB_IDENTIFIER="imagemagick-imslp_$(date +%s)"
-THRESHOLD_SERIES="50
-55
-60
-65
-70
-75"
+THRESHOLD_SERIES="50 55 60 65 70 75"
 
 _getopts() {
 	OPT_BACKUP=
@@ -196,7 +191,8 @@ _convert() {
 	if [ -z "$OPT_SERIES" ]; then
 		NEW=$(_remove_extension "$1").$OUT_EXT
 	else
-		NEW=$(_remove_extension "$1")_$OPT_THRESHOLD.$OUT_EXT
+		local TMP_THRESHOLD=$(echo $OPT_THRESHOLD | sed 's/%//g')
+		NEW="$(_remove_extension "$1")_threshold-${TMP_THRESHOLD}.$OUT_EXT"
 	fi
 
 	if [ "$CHANNELS" != 2c ] || [ "$OPT_FORCE" = 1 ]; then

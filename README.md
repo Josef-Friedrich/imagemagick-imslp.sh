@@ -10,7 +10,7 @@
 ## Usage
 
 ```
-Usage: imagemagick-imslp.sh [-bcfhjrstv] <filename-or-glob-pattern>
+Usage: imagemagick-imslp.sh [-bcfhjrSstv] <filename-or-glob-pattern>
 
 A wrapper script for imagemagick to process image files suitable for imslp.org (International Music Score Library Project)
 
@@ -30,6 +30,10 @@ OPTIONS:
 	  Join single paged PDF files to one PDF file
 	-r, --resize
 	  Resize 200%
+	-S, --threshold-series
+	  Convert the samge image with differnt threshold values to find
+	  the best threshold value. Those values are probed:
+	  .
 	-s, --short-description
 	  Show a short description / summary.
 	-t, --threshold
