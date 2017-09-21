@@ -23,27 +23,41 @@
 # TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE
 # SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 
-OUT_EXT=png
-
+NAME="$(basename "$0")"
+PROJECT_NAME="$(basename "$(pwd)")"
+FIRST_RELEASE=2017-08-11
+VERSION=1.0
 SHORT_DESCRIPTION="A wrapper script for imagemagick to process image \
 files suitable for imslp.org (International Music Score Library Project)"
-
-USAGE="Usage: imagemagick-imslp.sh [-bcfhjrt] <filename-or-glob-pattern>
+USAGE="Usage: imagemagick-imslp.sh [-bcfhjrstv] <filename-or-glob-pattern>
 
 $SHORT_DESCRIPTION
 
 http://imslp.org/wiki/IMSLP:Musiknoten_beisteuern
 
 OPTIONS:
-	-b, --backup:       backup original images (add .bak to filename)
-	-c, --compression:  Use CCITT Group 4 compression. This options
-	                    generates a PDF file
-	-f, --force:        force
-	-h, --help:         Show this help message
-	-j, --join:         Join single paged PDF files to one PDF file
-	-r, --resize:       Resize 200%
-	-t, --threshold:    threshold, default 50%
+	-b, --backup
+	  Backup original images (add .bak to filename).
+	-c, --compression
+	  Use CCITT Group 4 compression. This options generates a PDF
+	  file.
+	-f, --force
+	  force
+	-h, --help
+	  Show this help message
+	-j, --join
+	  Join single paged PDF files to one PDF file
+	-r, --resize
+	  Resize 200%
+	-s, --short-description
+	  Show a short description / summary.
+	-t, --threshold
+	  threshold, default 50%.
+	-v, --version
+	  Show the version number of this script.
 "
+
+OUT_EXT=png
 
 _getopts() {
 	OPT_BACKUP=
@@ -53,26 +67,43 @@ _getopts() {
 	OPT_RESIZE=
 	OPT_THRESHOLD=50%
 
-	while getopts :cbfhjrt:-: arg; do
+	while getopts :cbfhjrst:v-: arg; do
 		case $arg in
 			b) OPT_BACKUP=1 ;;
 			c) OPT_COMPRESSION=1 ;;
 			f) OPT_FORCE=1 ;;
-			h) echo $USAGE ; exit 0 ;;
+			h) echo "$USAGE" ; exit 0 ;;
 			j) OPT_JOIN=1 ;;
 			r) OPT_RESIZE=1 ;;
+			s) echo "$SHORT_DESCRIPTION" ; exit 0 ;;
 			t) OPT_THRESHOLD="$OPTARG" ;;
+			v) echo "$VERSION" ; exit 0 ;;
+
+			\?) echo "Invalid option “-$OPTARG”!" >&2 ; exit 2 ;;
+			:) echo "Option “-$OPTARG” requires an argument!" >&2 ; exit 3 ;;
+
 			-)
 				LONG_OPTARG="${OPTARG#*=}"
 				case $OPTARG in
 					backup) OPT_BACKUP=1 ;;
 					compression) OPT_COMPRESSION=1 ;;
 					force) OPT_FORCE=1 ;;
-					help) echo $USAGE ; exit 0 ;;
+					help) echo "$USAGE" ; exit 0 ;;
 					join) OPT_JOIN=1 ;;
 					resize) OPT_RESIZE=1 ;;
 					threshold=?*) OPT_THRESHOLD="$LONG_OPTARG" ;;
-					threshold*) echo "No arg for --$OPTARG option" >&2; exit 2 ;;
+					short-description) echo "$SHORT_DESCRIPTION" ; exit 0 ;;
+					version) echo "$VERSION" ; exit 0 ;;
+
+					threshold*)
+						echo "Option “--$OPTARG” requires an argument!" >&2
+						exit 3
+						;;
+
+					backup*|compression*|force*|help*|join*|resize*|short-description*|version*)
+						echo "No argument allowed for the option “--$OPTARG”!" >&2
+						exit 4
+						;;
 					'') break ;;
 					*) echo "Illegal option --$OPTARG" >&2; exit 2 ;;
 				esac ;;
