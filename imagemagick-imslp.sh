@@ -125,7 +125,13 @@ _get_extension() {
 }
 
 _pdf_to_images() {
-	pdfimages --tiff "$1"
+	pdfimages --tiff "$1" "$JOB_IDENTIFIER"
+}
+
+_process_pdf() {
+	if [ "$(_get_extension "$1")" = pdf ]; then
+		_pdf_to_images "$1"
+	fi
 }
 
 _get_channels() {
