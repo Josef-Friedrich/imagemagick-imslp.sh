@@ -10,6 +10,7 @@ setup() {
 	source_exec imagemagick-imslp.sh
 	[ "$JOB_IDENTIFIER" = imagemagick-imslp_1505986186 ]
 	[ "$OUT_EXT" = png ]
+	[ "$THRESHOLD_SERIES" = "50 55 60 65 70 75" ]
 }
 
 @test "_get_extension filename.pdf" {

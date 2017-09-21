@@ -33,7 +33,7 @@ OPTIONS:
 	-S, --threshold-series
 	  Convert the samge image with differnt threshold values to find
 	  the best threshold value. Those values are probed:
-	  .
+	  50 55 60 65 70 75.
 	-s, --short-description
 	  Show a short description / summary.
 	-t, --threshold
@@ -100,9 +100,9 @@ magick convert threshold.png -trim +repage repage2.png
 
 ![](test/scans/readme/repage2.png)
 
-
+```sh
 magick convert repage2.png -compress Group4 -monochrome compress.pdf
-
+```
 
 ![](test/scans/readme/repage2.png)
 

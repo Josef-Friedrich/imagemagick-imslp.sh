@@ -45,9 +45,9 @@ magick convert threshold.png -trim +repage repage2.png
 
 ![](test/scans/readme/repage2.png)
 
-
+```sh
 magick convert repage2.png -compress Group4 -monochrome compress.pdf
-
+```
 
 ![](test/scans/readme/repage2.png)
 
