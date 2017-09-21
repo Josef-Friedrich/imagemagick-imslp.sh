@@ -197,6 +197,8 @@ if [ -z "$IMAGES" ]; then
 	exit 1
 fi
 
+_process_pdf $IMAGES
+
 for IMAGE in $IMAGES; do
 	_convert "$IMAGE"
 done
