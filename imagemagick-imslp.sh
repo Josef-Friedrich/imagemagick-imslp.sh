@@ -59,6 +59,7 @@ OPTIONS:
 "
 
 OUT_EXT=png
+JOB_IDENTIFIER="imagemagick-imslp_$(date +%s)"
 
 _getopts() {
 	OPT_BACKUP=
@@ -121,6 +122,10 @@ _remove_extension() {
 
 _get_extension() {
 	echo "${1##*.}"
+}
+
+_pdf_to_images() {
+	pdfimages --tiff "$1"
 }
 
 _get_channels() {
