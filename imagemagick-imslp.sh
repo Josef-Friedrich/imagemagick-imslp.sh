@@ -136,7 +136,7 @@ _getopts() {
 	IMAGES=$@
 }
 
-_check_bin() {
+_check_for_executable() {
 	if ! command -v "$1" > /dev/null 2>&1 ; then
 		echo "Missing binary “$1”!" >&2
 		exit 2
@@ -233,10 +233,10 @@ _join() {
 
 _getopts $@
 
-_check_bin convert
-_check_bin identify
-_check_bin pdfimages
-_check_bin pdftk
+_check_for_executable convert
+_check_for_executable identify
+_check_for_executable pdfimages
+_check_for_executable pdftk
 
 if [ -z "$IMAGES" ]; then
 	echo "$USAGE" >&2
