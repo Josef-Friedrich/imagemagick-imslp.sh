@@ -8,7 +8,7 @@ setup() {
 @test "./imagemagick-imslp.sh" {
 	run ./imagemagick-imslp.sh
 	[ "$status" -eq 1 ]
-	[ "${lines[0]}" = 'Usage: imagemagick-imslp.sh [-bcfhjrSstv] <filename-or-glob-pattern>' ]
+	[ "${lines[0]}" = 'Usage: imagemagick-imslp.sh [-bcfhijrSstv] <filename-or-glob-pattern>' ]
 }
 
 @test "./imagemagick-imslp.sh file.pdf" {

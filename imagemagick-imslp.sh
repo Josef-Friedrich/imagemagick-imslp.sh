@@ -32,7 +32,7 @@ VERSION=1.0
 PROJECT_PAGES="https://github.com/JosefFriedrich-shell/imagemagick-imslp.sh"
 SHORT_DESCRIPTION="A wrapper script for imagemagick to process image \
 files suitable for imslp.org (International Music Score Library Project)"
-USAGE="Usage: imagemagick-imslp.sh [-bcfhjrSstv] <filename-or-glob-pattern>
+USAGE="Usage: imagemagick-imslp.sh [-bcfhijrSstv] <filename-or-glob-pattern>
 
 $SHORT_DESCRIPTION
 
@@ -48,13 +48,16 @@ OPTIONS:
 	  force
 	-h, --help
 	  Show this help message
+	-i, --imslp
+	  Use the best options to publish on IMSLP. (--compress,
+	   --join, --resize)
 	-j, --join
 	  Join single paged PDF files to one PDF file
 	-r, --resize
 	  Resize 200%
 	-S, --threshold-series
-	  Convert the samge image with differnt threshold values to find
-	  the best threshold value. Those values are probed:
+	  Convert the samge image with different threshold values to
+	  find the best threshold value. Those values are probed:
 	  $THRESHOLD_SERIES.
 	-s, --short-description
 	  Show a short description / summary.
@@ -75,12 +78,13 @@ _getopts() {
 	OPT_RESIZE=
 	OPT_THRESHOLD=50%
 
-	while getopts :cbfhjrSst:v-: arg; do
+	while getopts :cbfhijrSst:v-: arg; do
 		case $arg in
 			b) OPT_BACKUP=1 ;;
 			c) OPT_COMPRESSION=1 ;;
 			f) OPT_FORCE=1 ;;
 			h) echo "$USAGE" ; exit 0 ;;
+			i) OPT_COMPRESSION=1 ; OPT_JOIN=1 ; OPT_RESIZE=1 ;;
 			j) OPT_JOIN=1 ;;
 			r) OPT_RESIZE=1 ;;
 			S) OPT_SERIES=1 ;;
@@ -98,6 +102,7 @@ _getopts() {
 					compression) OPT_COMPRESSION=1 ;;
 					force) OPT_FORCE=1 ;;
 					help) echo "$USAGE" ; exit 0 ;;
+					imslp) OPT_COMPRESSION=1 ; OPT_JOIN=1 ; OPT_RESIZE=1 ;;
 					join) OPT_JOIN=1 ;;
 					resize) OPT_RESIZE=1 ;;
 					threshold-series) OPT_SERIES=1 ;;
@@ -105,7 +110,7 @@ _getopts() {
 					short-description) echo "$SHORT_DESCRIPTION" ; exit 0 ;;
 					version) echo "$VERSION" ; exit 0 ;;
 
-					backup*|compression*|force*|help*|join*|resize*|short-description*|threshold-series*|version*)
+					backup*|compression*|force*|help*|imslp*|join*|resize*|short-description*|threshold-series*|version*)
 						echo "No argument allowed for the option “--$OPTARG”!" >&2
 						exit 4
 						;;

@@ -59,17 +59,38 @@ setup() {
 @test "_getopts -h" {
 	run _getopts -h
 	[ "$status" -eq 0 ]
-	[ "${lines[0]}" = "Usage: imagemagick-imslp.sh [-bcfhjrSstv] <filename-or-glob-pattern>" ]
+	[ "${lines[0]}" = "Usage: imagemagick-imslp.sh [-bcfhijrSstv] <filename-or-glob-pattern>" ]
 }
 
 @test "_getopts --help" {
 	run _getopts --help
 	[ "$status" -eq 0 ]
-	[ "${lines[0]}" = "Usage: imagemagick-imslp.sh [-bcfhjrSstv] <filename-or-glob-pattern>" ]
+	[ "${lines[0]}" = "Usage: imagemagick-imslp.sh [-bcfhijrSstv] <filename-or-glob-pattern>" ]
 }
 
 @test "_getopts --help=123" {
 	run _getopts --help=123
+	[ "$status" -eq 4 ]
+}
+
+# -i, --imslp
+
+@test "_getopts -i" {
+	_getopts -i
+	[ "$OPT_COMPRESSION" -eq 1 ]
+	[ "$OPT_JOIN" -eq 1 ]
+	[ "$OPT_RESIZE" -eq 1 ]
+}
+
+@test "_getopts --imslp" {
+	_getopts --imslp
+	[ "$OPT_COMPRESSION" -eq 1 ]
+	[ "$OPT_JOIN" -eq 1 ]
+	[ "$OPT_RESIZE" -eq 1 ]
+}
+
+@test "_getopts --imslp=123" {
+	run _getopts --imslp=123
 	[ "$status" -eq 4 ]
 }
 
