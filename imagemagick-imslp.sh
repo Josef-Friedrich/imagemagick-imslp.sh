@@ -65,6 +65,12 @@ OPTIONS:
 	  threshold, default 50%.
 	-v, --version
 	  Show the version number of this script.
+
+DEPENDENCIES:
+
+	- pdftk
+	- imagemagick (convert, identify)
+	- poppler (pdfimages)
 "
 
 OUT_EXT=png
@@ -128,6 +134,13 @@ _getopts() {
 	done
 	shift $((OPTIND - 1))
 	IMAGES=$@
+}
+
+_check_bin() {
+	if ! command -v "$1" > /dev/null 2>&1 ; then
+		echo "Missing binary “$1”!" >&2
+		exit 2
+	fi
 }
 
 _remove_extension() {
@@ -219,6 +232,11 @@ _join() {
 ## This SEPARATOR is required for test purposes. Please don’t remove! ##
 
 _getopts $@
+
+_check_bin convert
+_check_bin identify
+_check_bin pdfimages
+_check_bin pdftk
 
 if [ -z "$IMAGES" ]; then
 	echo "$USAGE" >&2
