@@ -184,7 +184,8 @@ _options_enlighten_border() {
 
 	local LEVEL='-level 0%,30%'
 
-	local BORDER=$(printf "%i\n" $(echo "$WIDTH * 0.02" | bc))
+	local BORDER_FLOAT=$(echo "$WIDTH * 0.02" | bc)
+	local BORDER=$(printf "%i\n" $BORDER_FLOAT)
 
 	local BORDER_TOP="$BORDER"
 	local BORDER_RIGHT="$BORDER"
@@ -192,25 +193,25 @@ _options_enlighten_border() {
 	local BORDER_LEFT="$BORDER"
 
 	local REGION_TOP="\
-		$((WIDTH - BORDER_RIGHT))x\
-		${BORDER_TOP}"
+$((WIDTH - BORDER_RIGHT))x\
+${BORDER_TOP}"
 
 	local REGION_RIGHT="\
-		${BORDER_RIGHT}x\
-		$((HEIGHT - BORDER_BOTTOM))\
-		+$((WIDTH - BORDER_RIGHT))"
+${BORDER_RIGHT}x\
+$((HEIGHT - BORDER_BOTTOM))\
++$((WIDTH - BORDER_RIGHT))"
 
 	local REGION_BOTTOM="\
-		$((WIDTH - BORDER_LEFT))x\
-		${BORDER_BOTTOM}\
-		+${BORDER_LEFT}\
-		+$((HEIGHT - BORDER_BOTTOM))"
+$((WIDTH - BORDER_LEFT))x\
+${BORDER_BOTTOM}\
++${BORDER_LEFT}\
++$((HEIGHT - BORDER_BOTTOM))"
 
 	local REGION_LEFT="\
-		${BORDER_LEFT}x\
-		$((HEIGHT - BORDER_TOP))\
-		+0\
-		+${BORDER_TOP}"
+${BORDER_LEFT}x\
+$((HEIGHT - BORDER_TOP))\
++0\
++${BORDER_TOP}"
 
 	echo "\
 		-region $REGION_TOP $LEVEL \

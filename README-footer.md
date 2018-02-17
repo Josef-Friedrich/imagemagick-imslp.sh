@@ -1,3 +1,7 @@
+## TODO
+
+* Fix and test --enlighten-border
+
 ## Example
 
 Original file size: 1.1 MB

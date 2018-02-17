@@ -48,3 +48,9 @@ setup() {
 	[ "$status" -eq 0 ]
 	[ "${lines[0]}" = '' ]
 }
+
+@test "unittest: _options_enlighten_border" {
+	run _options_enlighten_border test/scans/originals/bach-busoni.png
+	echo ${lines[0]} > $HOME/debug
+	[ "$status" -eq 0 ]
+}
