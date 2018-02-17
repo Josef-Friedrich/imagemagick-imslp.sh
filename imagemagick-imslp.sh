@@ -44,6 +44,8 @@ OPTIONS:
 	-c, --compression
 	  Use CCITT Group 4 compression. This options generates a PDF
 	  file.
+	-e, --enlighten-border
+	  Enlighten the border.
 	-f, --force
 	  force
 	-h, --help
@@ -84,10 +86,11 @@ _getopts() {
 	OPT_RESIZE=
 	OPT_THRESHOLD=50%
 
-	while getopts :cbfhijrSst:v-: arg; do
+	while getopts :cbefhijrSst:v-: arg; do
 		case $arg in
 			b) OPT_BACKUP=1 ;;
 			c) OPT_COMPRESSION=1 ;;
+			e) OPT_ENLIGHTEN=1 ;;
 			f) OPT_FORCE=1 ;;
 			h) echo "$USAGE" ; exit 0 ;;
 			i) OPT_COMPRESSION=1 ; OPT_JOIN=1 ; OPT_RESIZE=1 ;;
@@ -106,6 +109,7 @@ _getopts() {
 				case $OPTARG in
 					backup) OPT_BACKUP=1 ;;
 					compression) OPT_COMPRESSION=1 ;;
+					enlighten-border) OPT_ENLIGHTEN=1 ;;
 					force) OPT_FORCE=1 ;;
 					help) echo "$USAGE" ; exit 0 ;;
 					imslp) OPT_COMPRESSION=1 ; OPT_JOIN=1 ; OPT_RESIZE=1 ;;
@@ -116,7 +120,7 @@ _getopts() {
 					short-description) echo "$SHORT_DESCRIPTION" ; exit 0 ;;
 					version) echo "$VERSION" ; exit 0 ;;
 
-					backup*|compression*|force*|help*|imslp*|join*|resize*|short-description*|threshold-series*|version*)
+					backup*|compression*|enlighten-border*|force*|help*|imslp*|join*|resize*|short-description*|threshold-series*|version*)
 						echo "No argument allowed for the option “--$OPTARG”!" >&2
 						exit 4
 						;;
@@ -173,6 +177,48 @@ _get_channels() {
 	identify "$1" | cut -d " " -f 7
 }
 
+_options_enlighten_border() {
+	local INPUT="$1"
+	local WIDTH=$(identify -format %w "$INPUT")
+	local HEIGHT=$(identify -format %h "$INPUT")
+
+	local LEVEL='-level 0%,30%'
+
+	local BORDER=$(printf "%i\n" $(echo "$WIDTH * 0.02" | bc))
+
+	local BORDER_TOP="$BORDER"
+	local BORDER_RIGHT="$BORDER"
+	local BORDER_BOTTOM="$BORDER"
+	local BORDER_LEFT="$BORDER"
+
+	local REGION_TOP="\
+		$((WIDTH - BORDER_RIGHT))x\
+		${BORDER_TOP}"
+
+	local REGION_RIGHT="\
+		${BORDER_RIGHT}x\
+		$((HEIGHT - BORDER_BOTTOM))\
+		+$((WIDTH - BORDER_RIGHT))"
+
+	local REGION_BOTTOM="\
+		$((WIDTH - BORDER_LEFT))x\
+		${BORDER_BOTTOM}\
+		+${BORDER_LEFT}\
+		+$((HEIGHT - BORDER_BOTTOM))"
+
+	local REGION_LEFT="\
+		${BORDER_LEFT}x\
+		$((HEIGHT - BORDER_TOP))\
+		+0\
+		+${BORDER_TOP}"
+
+	echo "\
+		-region $REGION_TOP $LEVEL \
+		-region $REGION_RIGHT $LEVEL \
+		-region $REGION_BOTTOM $LEVEL \
+		-region $REGION_LEFT $LEVEL"
+}
+
 _options_defaults() {
 	OPT_BORDER='-border 100x100 -bordercolor "#FFFFFF"'
 	[ "$OPT_COMPRESSION" ] && OPT_COMPRESSION=' -compress Group4 -monochrome'
@@ -219,7 +265,10 @@ _convert() {
 		if [ "$OPT_BACKUP" = 1 ]; then
 			cp "$1" "$1.bak"
 		fi
-		convert "$1" $(_options) "$NEW"
+		if [ -n "$OPT_ENLIGHTEN" ]; then
+			ENLIGHTEN="$(_options_enlighten_border "$1")"
+		fi
+		convert "$1" $ENLIGHTEN $(_options) "$NEW"
 	else
 		echo "The image has already 2 channels ($CHANNELS). Use -f option to force conversion."
 	fi

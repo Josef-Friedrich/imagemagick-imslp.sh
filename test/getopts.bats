@@ -37,6 +37,23 @@ setup() {
 	[ "$status" -eq 4 ]
 }
 
+# -e, --enlighten-border
+
+@test "_getopts -e" {
+	_getopts -e
+	[ "$OPT_ENLIGHTEN" -eq 1 ]
+}
+
+@test "_getopts --enlighten-border" {
+	_getopts --enlighten-border
+	[ "$OPT_ENLIGHTEN" -eq 1 ]
+}
+
+@test "_getopts --enlighten-border=123" {
+	run _getopts --enlighten-border=123
+	[ "$status" -eq 4 ]
+}
+
 # -f, --force
 
 @test "_getopts -f" {
