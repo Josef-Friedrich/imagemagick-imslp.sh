@@ -22,6 +22,8 @@ OPTIONS:
 	-c, --compression
 	  Use CCITT Group 4 compression. This options generates a PDF
 	  file.
+	-e, --enlighten-border
+	  Enlighten the border.
 	-f, --force
 	  force
 	-h, --help
@@ -61,6 +63,10 @@ DEPENDENCIES:
 ```
 make test
 ```
+
+## TODO
+
+* Fix and test --enlighten-border
 
 ## Example
 
