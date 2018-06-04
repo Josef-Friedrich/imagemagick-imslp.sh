@@ -1,4 +1,4 @@
-[![Build Status](https://travis-ci.org/JosefFriedrich-shell/imagemagick-imslp.sh.svg?branch=master)](https://travis-ci.org/JosefFriedrich-shell/imagemagick-imslp.sh)
+[![Build Status](https://travis-ci.org/Josef-Friedrich/imagemagick-imslp.sh.svg?branch=master)](https://travis-ci.org/Josef-Friedrich/imagemagick-imslp.sh)
 
 # imagemagick-imslp.sh
 
@@ -54,7 +54,7 @@ DEPENDENCIES:
 
 ## Project pages
 
-* https://github.com/JosefFriedrich-shell/imagemagick-imslp.sh
+* https://github.com/Josef-Friedrich/imagemagick-imslp.sh
 
 ## Testing
 
